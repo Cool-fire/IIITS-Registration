@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Signup</title>
+    <link rel = "stylesheet" type = "text/css" href="{% static 'fb/css/back.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fb/mdl/material.min.css' %}">
+    <script src="{% static 'fb/mdl/material.min.js' %}"></script>
+  </head>
+  <body>
+
+<div class="card-container-center">
+    <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Sign Up</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <form class="signup" id="signup_form" method="post" action="/accounts/signup/">
+                {% csrf_token %}
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" name="username" maxlength="150" minlength="1" autofocus="autofocus" required id="id_username">
+                    <label class="mdl-textfield__label" for="id_username">user</label>
+                </div>
+                
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="password" name="password1" required id="id_password1">
+                    <label class="mdl-textfield__label" for="id_password1">password</label>
+                </div>
+
+                {% if form.errors %} {% for field in form %} {% for error in field.errors %}
+                <div class="alert alert-error">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %} {% endfor %} {% for error in form.non_field_errors %}
+                <div class="alert alert-error">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %} {% endif %}
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="password" name="password2" required id="id_password2">
+                    <label class="mdl-textfield__label" for="id_password2">password (again)</label>
+                </div>
+                <!-- <label><b>Repeat Password</b></label>
+    <input type="password" name="password2" required placeholder="Password (again)" id="id_password2" /> -->
+                <!-- <input type="checkbox" checked="checked"> Remember me -->
+                <label class="mdl-checkbox mdl-js-checkbox" for="checkbox1">
+                  <input type = "checkbox" id = "checkbox1" 
+                     class = "mdl-checkbox__input" checked>
+                  <span class = "mdl-checkbox__label">Remember me</span>
+               </label>
+                <p>By creating an account you agree to our <a href="#">Terms & Privacy</a></p>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Cancel</button>
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+  </body>
+</html>

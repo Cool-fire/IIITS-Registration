@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'fb/css/back.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fb/mdl/material.min.css' %}">
+    <script src="{% static 'fb/mdl/material.min.js' %}"></script>
+  </head>
+
+  <body>
+
+    <div class="card-container-center">
+      <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">Sign In</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          <form method="POST" action="{% url 'account_login' %}">
+            {% csrf_token %} {{ form.non_field_errors }}
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" id="id_login" maxlength="30" name="login" type="text">
+              <label class="mdl-textfield__label" for="id_login">Username</label>
+            </div>
+              {{ form.login.errors }}
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" id="id_password" name="password" type="password">
+                <label class="mdl-textfield__label" for="id_login">Password</label>
+              </div>
+              {{ form.password.errors }}
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <button style="width: 100%;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" type="submit">sign in</button>
+            <br><br><a href="{% url 'account_reset_password' %}">Forgot password</a>
+            <br><br><a href = '/accounts/signup/'>Sign up</a>
+            </form>
+        </div>
+        </div>
+      </div>
+
+    <!-- <div class="jumbotron">
+      <div class="container">
+        <p><center><a class="btn btn-primary btn-lg" href = '/accounts/facebook/login/?process=login' role="button">Login with Facebook </a></center></p>
+      </div>
+
+        <div class="container">
+            <p><center><a class="btn btn-warning" href = '/accounts/signup/' role="button">Sign up</p>
+      </div>
+    </div> -->
+
+  </body>
+</html>

@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>dashboard</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'fb/css/dash.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fb/mdl/material.min.css' %}">
+    <script src="{% static 'fb/mdl/material.min.js' %}"></script>
+</head>
+<body>
+{% if request.user.is_authenticated %}
+
+    {% if request.user.first_name or request.user.last_name %}
+        {{ request.user.first_name }} {{ request.user.last_name }}
+    {% else %}
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
+            mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+            </header>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">{{ request.user.username }}</span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link mdl-button mdl-js-button mdl-js-ripple-effect" href="#">Link</a>
+                    <a class="mdl-navigation__link mdl-button mdl-js-button mdl-js-ripple-effect" onclick="document.querySelector('#content').innerHTML = document.querySelector('#upload').innerHTML" href="#upload">Upload</a>
+                    <a class="mdl-navigation__link mdl-button mdl-js-button mdl-js-ripple-effect" onclick="document.querySelector('#content').innerHTML = document.querySelector('#settings').innerHTML" href="#settings">Settings</a>
+                    <a class="mdl-navigation__link mdl-button mdl-js-button mdl-js-ripple-effect" id="demo-show-snackbar" href="#">Sign Out</a>
+                </nav>
+            </div>
+            <main class="mdl-layout__content">
+                <div class="page-content" style="padding: 7px;">
+                    <!-- Your content goes here -->
+                    <div id="content"></div>
+                </div>
+            </main>
+        </div>
+
+        <template id="upload">
+            Upload
+            <form action="/upload/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                    <label for="id_docfile">Select a file:</label> max. 42 megabytes
+                    <input type="file" name="docfile" required id="id_docfile" />
+                    {{ form.docfile.errors }} {{ form.docfile }}
+                    <input type="submit" value="Upload">
+            </form>
+        </template>
+        <template id="settings">Settings</template>
+
+            <div style="z-index: 10;" id="demo-snackbar-example" class="mdl-js-snackbar mdl-snackbar">
+                <form method="post" action="/accounts/logout/">
+                    <label class="mdl-snackbar__text"></label>
+                     {% csrf_token %}
+                    <button style="padding-top: 16px !important;" class="mdl-snackbar__action" type="submit">Yes</button>
+                </form>
+            </div>
+    {% endif %}
+{% else %}
+    <a href="/accounts/login/" class="pull-right">Login</a>
+{% endif %}
+
+<script>
+    (function () {
+        'use strict';
+        var snackbarContainer = document.querySelector('#demo-snackbar-example');
+        var showSnackbarButton = document.querySelector('#demo-show-snackbar');
+        var handler = function (event) {
+            showSnackbarButton.style.backgroundColor = '';
+        };
+        showSnackbarButton.addEventListener('click', function () {
+            'use strict';
+            // showSnackbarButton.style.backgroundColor = '#' +
+               // Math.floor(Math.random() * 0xFFFFFF).toString(16);
+            var data = {
+                message: 'Are you sure?',
+                timeout: 5000,
+                actionHandler: handler,
+                actionText: 'YES'
+            };
+            snackbarContainer.MaterialSnackbar.showSnackbar(data);
+        });
+    }());
+    switch (window.location.hash) {
+        case '#settings':
+                document.querySelector('#content').innerHTML = document.querySelector('#settings').innerHTML
+            break;
+        case '#upload':
+                document.querySelector('#content').innerHTML = document.querySelector('#upload').innerHTML
+            break;
+        default:
+            break;
+    }
+</script>
+</body>
+</html>
